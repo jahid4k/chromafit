@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import WardrobeUploader, { PreviewItem } from "@/components/WardrobeUploader";
 import BaseItemSelector from "@/components/BaseItemSelector";
 import { analyzeWardrobe, ApiError } from "@/lib/api";
+import NavBar from "@/components/Navbar";
 
 // ── Loading steps ────────────────────────────
 
@@ -133,7 +134,7 @@ export default function UploadPage() {
                 }`}
               >
                 {/* Status indicator */}
-                <div className="flex-shrink-0 w-7 flex items-center justify-center">
+                <div className="shrink-0 w-7 flex items-center justify-center">
                   {isDone ? (
                     <span className="text-emerald-400 text-base">✓</span>
                   ) : isActive ? (
@@ -196,36 +197,19 @@ export default function UploadPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Nav */}
-      <header className="border-b border-stone-200 bg-white/80 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="font-display text-3xl font-semibold tracking-wide text-stone-900">
-              ChromaFit
-            </h1>
-            <p className="text-[11px] text-stone-600 tracking-widest uppercase -mt-0.5">
-              Your wardrobe, decoded by color theory
-            </p>
+      <NavBar
+        title="ChromaFit"
+        links={[
+          { label: "Sessions", href: "/sessions" },
+          { label: "Browse palettes ✦", href: "/palettes" },
+        ]}
+        desktopExtra={
+          <div className="text-[10px] text-stone-500 text-right">
+            <p>Qwen2.5-VL · AMD MI300X</p>
+            <p>Sanzo Wada Palettes</p>
           </div>
-          <div className="flex items-center gap-3">
-            <a
-              href="/sessions"
-              className="text-[11px] text-stone-500 hover:text-stone-700 transition-colors border border-stone-200 rounded-lg px-3 py-1.5 hidden sm:inline-block"
-            >
-              Sessions
-            </a>
-            <a
-              href="/palettes"
-              className="text-[11px] text-stone-500 hover:text-stone-700 transition-colors border border-stone-200 rounded-lg px-3 py-1.5 hidden sm:inline-block"
-            >
-              Browse palettes ✦
-            </a>
-            <div className="text-[10px] text-stone-600 text-right hidden sm:block">
-              <p>Qwen2.5-VL · AMD MI300X</p>
-              <p>Sanzo Wada Palettes</p>
-            </div>
-          </div>
-        </div>
-      </header>
+        }
+      />
 
       {/* Main */}
       <main className="flex-1 max-w-4xl mx-auto w-full px-6 py-10">

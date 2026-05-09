@@ -15,6 +15,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { SessionSummary, SessionsPagination } from "@/lib/types";
 import { getSessions, ApiError } from "@/lib/api";
+import NavBar from "@/components/Navbar";
 
 // ── Helpers ───────────────────────────────────
 
@@ -274,31 +275,12 @@ export default function SessionsPage() {
   return (
     <div className="min-h-screen bg-stone-50 flex flex-col">
       {/* ── Nav ──────────────────────────────── */}
-      <header className="border-b border-stone-200 bg-white/80 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <button
-            onClick={() => router.push("/")}
-            className="font-display text-xl font-semibold text-stone-900 hover:text-stone-600 transition-colors"
-          >
-            ChromaFit
-          </button>
-
-          <div className="flex items-center gap-3">
-            <a
-              href="/palettes"
-              className="text-xs text-stone-400 hover:text-stone-600 transition-colors border border-stone-200 rounded-lg px-3 py-1.5 hidden sm:inline-block"
-            >
-              Browse palettes ✦
-            </a>
-            <button
-              onClick={() => router.push("/")}
-              className="text-xs text-stone-400 hover:text-stone-600 transition-colors border border-stone-200 rounded-lg px-3 py-1.5"
-            >
-              ← New analysis
-            </button>
-          </div>
-        </div>
-      </header>
+      <NavBar
+        links={[
+          { label: "Browse palettes ✦", href: "/palettes" },
+          { label: "← New analysis", href: "/" },
+        ]}
+      />
 
       {/* ── Page header ──────────────────────── */}
       <div className="max-w-5xl mx-auto w-full px-6 pt-10 pb-6">

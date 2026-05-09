@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { MatchedPalette } from "@/lib/types";
 import { getPalettes, ApiError } from "@/lib/api";
 import PaletteMatchCard from "@/components/PaletteMatchCard";
+import NavBar from "@/components/Navbar";
 
 // ── Constants ────────────────────────────────
 
@@ -152,28 +153,13 @@ export default function PalettesPage() {
   return (
     <div className="min-h-screen bg-stone-50 flex flex-col">
       {/* ── Nav ──────────────────────────────── */}
-      <header className="border-b border-stone-200 bg-white/80 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <button
-            onClick={() => router.push("/")}
-            className="font-display text-xl font-semibold text-stone-900 hover:text-stone-600 transition-colors"
-          >
-            ChromaFit
-          </button>
-
-          <div className="flex items-center gap-3">
-            <span className="text-[11px] text-stone-400 hidden sm:inline">
-              Sanzo Wada · Palette Library
-            </span>
-            <button
-              onClick={() => router.push("/")}
-              className="text-xs text-stone-400 hover:text-stone-600 transition-colors border border-stone-200 rounded-lg px-3 py-1.5"
-            >
-              ← Analyze wardrobe
-            </button>
-          </div>
-        </div>
-      </header>
+      <NavBar
+        links={[
+          { label: "Sessions", href: "/sessions" },
+          { label: "← Analyze wardrobe", href: "/" },
+        ]}
+        desktopMeta="Sanzo Wada · Palette Library"
+      />
 
       {/* ── Page header ──────────────────────── */}
       <div className="max-w-5xl mx-auto w-full px-6 pt-10 pb-6">

@@ -20,6 +20,7 @@ import ItemPreviewGrid from "@/components/ItemPreviewGrid";
 import OutfitCombinationCard from "@/components/OutfitCombinationCard";
 import OutfitRankingList from "@/components/OutfitRankingList";
 import PaletteMatchCard from "@/components/PaletteMatchCard";
+import NavBar from "@/components/Navbar";
 
 // ── Skeleton for unexpected load delay ───────
 
@@ -125,55 +126,30 @@ export default function ResultsPage() {
 
   return (
     <div className="min-h-screen bg-stone-50">
-      {/* ── Nav ────────────────────────────── */}
-      <header className="border-b border-stone-200 bg-white/80 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <button
-            onClick={() => router.push("/")}
-            className="font-display text-xl font-semibold text-stone-900 hover:text-stone-600 transition-colors"
-          >
-            ChromaFit
-          </button>
-
-          <div className="flex items-center gap-3">
-            {/* Processing time */}
-            <span className="text-[11px] text-stone-400 hidden sm:inline">
-              Analyzed in {processingSeconds}s
+      <NavBar
+        desktopMeta={`Analyzed in ${processingSeconds}s`}
+        desktopExtra={
+          data.mode === "anchored" && anchorItem ? (
+            <span className="inline-flex items-center gap-1.5 text-[11px] bg-stone-900 text-white rounded-full px-3 py-1">
+              <span>⚓</span>
+              <span className="hidden md:inline">
+                Anchored to: {anchorItem.clothing_type}
+              </span>
+              <span className="md:hidden">Anchored</span>
             </span>
-
-            {/* Mode badge */}
-            {data.mode === "anchored" && anchorItem ? (
-              <span className="inline-flex items-center gap-1.5 text-[11px] bg-stone-900 text-white rounded-full px-3 py-1">
-                <span>⚓</span>
-                <span>Anchored to: {anchorItem.clothing_type}</span>
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1.5 text-[11px] bg-stone-100 text-stone-500 rounded-full px-3 py-1">
-                <span>✦</span>
-                <span>Free Recommendation</span>
-              </span>
-            )}
-            <a
-              href="/sessions"
-              className="text-xs text-stone-400 hover:text-stone-600 transition-colors border border-stone-200 rounded-lg px-3 py-1.5 hidden sm:inline-block"
-            >
-              Sessions
-            </a>
-            <a
-              href="/palettes"
-              className="text-xs text-stone-400 hover:text-stone-600 transition-colors border border-stone-200 rounded-lg px-3 py-1.5 hidden sm:inline-block"
-            >
-              Browse palettes
-            </a>
-            <button
-              onClick={() => router.push("/")}
-              className="text-xs text-stone-400 hover:text-stone-600 transition-colors border border-stone-200 rounded-lg px-3 py-1.5"
-            >
-              New analysis
-            </button>
-          </div>
-        </div>
-      </header>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 text-[11px] bg-stone-100 text-stone-500 rounded-full px-3 py-1">
+              <span>✦</span>
+              <span>Free</span>
+            </span>
+          )
+        }
+        links={[
+          { label: "Sessions", href: "/sessions" },
+          { label: "Browse palettes", href: "/palettes" },
+          { label: "New analysis", href: "/" },
+        ]}
+      />
 
       {/* ── Main content ─────────────────── */}
       <main className="max-w-5xl mx-auto px-6 py-10 space-y-14">
