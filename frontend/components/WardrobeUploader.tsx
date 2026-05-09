@@ -9,7 +9,7 @@
 
 import { useState, useRef, useCallback, DragEvent, ChangeEvent } from "react";
 
-const MAX_IMAGES = 10;
+const MAX_IMAGES = 20;
 const MIN_IMAGES = 3;
 const MAX_SIZE_MB = 5;
 const ACCEPTED_MIME = ["image/jpeg", "image/png", "image/webp"];
