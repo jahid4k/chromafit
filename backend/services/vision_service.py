@@ -195,7 +195,7 @@ async def analyze_wardrobe_images(
         try:
             response = await client.chat.completions.create(
                 model=settings.vllm_model,
-                max_tokens=1000,
+                max_tokens=8192,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": content},
