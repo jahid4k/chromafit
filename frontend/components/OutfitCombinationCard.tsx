@@ -4,8 +4,8 @@
 // OutfitCombinationCard
 // Displays one ranked outfit combination.
 // Shows item names, combined swatches,
-// matched palette, and harmony score.
-// Expandable to show full reasoning.
+// matched palette, harmony score, and item
+// thumbnails (for all cards when expanded).
 // ─────────────────────────────────────────────
 
 import { useState } from "react";
@@ -57,7 +57,7 @@ export default function OutfitCombinationCard({
       >
         {/* Rank */}
         <div
-          className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-lg ${
+          className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-lg ${
             isHero ? "bg-stone-900 text-white" : "bg-stone-100 text-stone-500"
           }`}
         >
@@ -91,7 +91,7 @@ export default function OutfitCombinationCard({
         </div>
 
         {/* Harmony score */}
-        <div className="flex-shrink-0 text-right">
+        <div className="shrink-0 text-right">
           <div
             className={`font-display font-bold ${isHero ? "text-4xl text-stone-900" : "text-2xl text-stone-700"}`}
           >
@@ -104,7 +104,7 @@ export default function OutfitCombinationCard({
 
         {/* Expand toggle (non-hero) */}
         {!isHero && (
-          <div className="flex-shrink-0 text-stone-400 text-xs">
+          <div className="shrink-0 text-stone-400 text-xs">
             {expanded ? "▲" : "▼"}
           </div>
         )}
@@ -119,33 +119,39 @@ export default function OutfitCombinationCard({
             compact={!isHero}
           />
 
-          {/* Item thumbnails (hero only) */}
-          {isHero && (
-            <div className="flex gap-3 overflow-x-auto pb-1">
-              {combination.item_indices.map((idx) => {
-                const item = items[idx];
-                if (!item) return null;
-                return (
-                  <div key={idx} className="flex-shrink-0 text-center">
-                    <div className="w-24 h-24 rounded-xl overflow-hidden border border-stone-200 bg-stone-50">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={item.cloudinary_url}
-                        alt={item.clothing_type}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <p className="text-[11px] text-stone-500 mt-1 capitalize max-w-[96px] leading-tight">
-                      {item.clothing_type}
-                    </p>
-                    {item.anchor && (
-                      <p className="text-[10px] text-stone-400">⚓ anchor</p>
-                    )}
+          {/* Item thumbnails — shown for all cards when expanded */}
+          <div className="flex gap-3 overflow-x-auto pb-1">
+            {combination.item_indices.map((idx) => {
+              const item = items[idx];
+              if (!item) return null;
+              return (
+                <div key={idx} className="shrink-0 text-center">
+                  <div
+                    className={`rounded-xl overflow-hidden border border-stone-200 bg-stone-50 ${
+                      isHero ? "w-24 h-24" : "w-20 h-20"
+                    }`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.cloudinary_url}
+                      alt={item.clothing_type}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                );
-              })}
-            </div>
-          )}
+                  <p
+                    className={`text-stone-500 mt-1 capitalize leading-tight ${
+                      isHero ? "text-[11px] max-w-24" : "text-[10px] max-w-20"
+                    }`}
+                  >
+                    {item.clothing_type}
+                  </p>
+                  {item.anchor && (
+                    <p className="text-[10px] text-stone-400">⚓ anchor</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
 
           {/* Reasoning */}
           <ReasoningPanel
