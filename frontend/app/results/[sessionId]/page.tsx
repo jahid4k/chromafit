@@ -154,6 +154,12 @@ export default function ResultsPage() {
               </span>
             )}
 
+            <a
+              href="/palettes"
+              className="text-xs text-stone-400 hover:text-stone-600 transition-colors border border-stone-200 rounded-lg px-3 py-1.5 hidden sm:inline-block"
+            >
+              Browse palettes
+            </a>
             <button
               onClick={() => router.push("/")}
               className="text-xs text-stone-400 hover:text-stone-600 transition-colors border border-stone-200 rounded-lg px-3 py-1.5"

@@ -8,7 +8,7 @@ from services import palette_service
 from services.vision_service import VisionServiceError
 from config import settings
 from db.mongo import connect_db, _ensure_indexes, disconnect_db
-from routers import analysis, sessions
+from routers import analysis, sessions, palettes
 
 logger = structlog.get_logger(__name__)
 
@@ -125,3 +125,4 @@ async def check_config():
 
 app.include_router(analysis.router)
 app.include_router(sessions.router)
+app.include_router(palettes.router)

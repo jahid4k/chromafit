@@ -122,6 +122,9 @@ def load_palettes() -> None:
     _PALETTES = valid
     logger.info("palette_loaded", count=len(_PALETTES))
 
+def get_all_palettes() -> list[dict]:
+    """Return the full cached palette list. Called by the palettes router."""
+    return [p.model_dump() for p in _PALETTES]
 
 def get_palettes() -> List[Dict[str, Any]]:
     return _PALETTES

@@ -1,4 +1,4 @@
-import { AnalysisResponse } from "./types";
+import { AnalysisResponse, MatchedPalette } from "./types";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8001";
 
@@ -69,4 +69,24 @@ export async function getSession(sessionId: string): Promise<AnalysisResponse> {
   }
 
   return res.json() as Promise<AnalysisResponse>;
+}
+
+export interface PalettesResponse {
+  palettes: MatchedPalette[];
+  count: number;
+}
+
+export async function getPalettes(): Promise<PalettesResponse> {
+  const res = await fetch(`${API_BASE}/api/palettes`);
+
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => null);
+    const message =
+      typeof errorBody?.detail === "string"
+        ? errorBody.detail
+        : `Failed to load palettes (${res.status})`;
+    throw new ApiError(res.status, message, errorBody?.detail);
+  }
+
+  return res.json() as Promise<PalettesResponse>;
 }

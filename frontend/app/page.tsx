@@ -206,9 +206,17 @@ export default function UploadPage() {
               Your wardrobe, decoded by color theory
             </p>
           </div>
-          <div className="text-[10px] text-stone-600 text-right hidden sm:block">
-            <p>Qwen2.5-VL · AMD MI300X</p>
-            <p>Sanzo Wada Palettes</p>
+          <div className="flex items-center gap-3">
+            <a
+              href="/palettes"
+              className="text-[11px] text-stone-500 hover:text-stone-700 transition-colors border border-stone-200 rounded-lg px-3 py-1.5 hidden sm:inline-block"
+            >
+              Browse palettes ✦
+            </a>
+            <div className="text-[10px] text-stone-600 text-right hidden sm:block">
+              <p>Qwen2.5-VL · AMD MI300X</p>
+              <p>Sanzo Wada Palettes</p>
+            </div>
           </div>
         </div>
       </header>
