@@ -23,7 +23,7 @@ EXAMPLE — Dark knitwear:
 {
   "image_index": 0,
   "clothing_type": "crew-neck sweater",
-  "clothing_subtype": "knitwear",
+  "clothing_subtype": "tops",
   "dominant_colors": ["#2C3E50", "#34495E"],
   "color_names": ["Charcoal Navy", "Slate Blue"],
   "texture_notes": "ribbed wool",
@@ -55,11 +55,32 @@ EXAMPLE — Patterned item (extract dominant base color, ignore pattern):
   "confidence": "high"
 }
 
+EXAMPLE — Trousers/pants:
+{
+  "image_index": 3,
+  "clothing_type": "slim-fit chinos",
+  "clothing_subtype": "bottoms",
+  "dominant_colors": ["#C4A882"],
+  "color_names": ["Sand Beige"],
+  "texture_notes": "matte cotton twill",
+  "season_suitability": ["spring", "summer", "autumn"],
+  "confidence": "high"
+}
+
 Rules:
 - Analyze each image INDEPENDENTLY
 - Return ONLY valid JSON, no markdown, no explanation
 - dominant_colors: most dominant first, ignore shadows and background
 - If image is unclear, set confidence to "low" and do your best
+
+STRICT RULE — clothing_subtype must be EXACTLY one of these values, nothing else:
+- "tops"        → shirts, t-shirts, sweaters, jackets, coats, hoodies, any upper body item
+- "bottoms"     → trousers, pants, jeans, shorts, skirts, any lower body item
+- "footwear"    → shoes, boots, sneakers, sandals, loafers, any footwear
+- "accessories" → belts, scarves, hats, bags, watches, any accessory
+- "unknown"     → if you cannot determine the category
+
+Never use any other value for clothing_subtype. Not "knitwear", not "trousers", not "shirts" — only the five values above.
 
 Return this exact structure:
 {
@@ -68,7 +89,7 @@ Return this exact structure:
 
 IMPORTANT — if an image is not a clothing item:
 - Set clothing_type to "non-clothing"
-- Set clothing_subtype to "unknown"  
+- Set clothing_subtype to "unknown"
 - Set dominant_colors to ["#808080"]
 - Set color_names to ["Unknown"]
 - Set texture_notes to "not a clothing item"

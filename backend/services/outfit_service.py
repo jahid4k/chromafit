@@ -10,29 +10,111 @@ from services import palette_service
 
 logger = structlog.get_logger(__name__)
 
-# Subtypes that belong to different clothing categories for the diversity bonus
-_TOPS = {"tops", "knitwear", "shirts", "outerwear", "jackets", "coats"}
-_BOTTOMS = {"trousers", "jeans", "shorts", "skirts"}
-_FOOTWEAR = {"footwear", "shoes", "boots", "sneakers"}
-_ACCESSORIES = {"accessories", "belts", "scarves", "hats"}
+# ── Category maps — must match Qwen's actual clothing_subtype output ──────────
+# Qwen returns broad subtypes like "bottoms", "tops", "footwear"
+# We also include specific variants in case Qwen is more specific
+
+_CATEGORY_MAP: Dict[str, str] = {
+    # Tops
+    "tops": "tops",
+    "knitwear": "tops",
+    "shirts": "tops",
+    "outerwear": "tops",
+    "jackets": "tops",
+    "coats": "tops",
+    "sweaters": "tops",
+    "t-shirts": "tops",
+    # Bottoms
+    "bottoms": "bottoms",
+    "trousers": "bottoms",
+    "jeans": "bottoms",
+    "shorts": "bottoms",
+    "skirts": "bottoms",
+    "pants": "bottoms",
+    # Footwear
+    "footwear": "footwear",
+    "shoes": "footwear",
+    "boots": "footwear",
+    "sneakers": "footwear",
+    "sandals": "footwear",
+    "loafers": "footwear",
+    # Accessories (optional additions to an outfit)
+    "accessories": "accessories",
+    "belts": "accessories",
+    "scarves": "accessories",
+    "hats": "accessories",
+}
 
 
-def _subtype_bonus(subtypes: List[str]) -> int:
-    """Return +10 if combination spans top + bottom + shoes."""
-    lower = {s.lower() for s in subtypes}
-    has_top = bool(lower & _TOPS)
-    has_bottom = bool(lower & _BOTTOMS)
-    has_shoes = bool(lower & _FOOTWEAR)
+def _get_category(subtype: str) -> str:
+    """Normalize a clothing_subtype to a broad category. Unknown = 'unknown'."""
+    return _CATEGORY_MAP.get(subtype.lower().strip(), "unknown")
+
+
+def _is_valid_combination(idx_set: List[int], items: List[Dict[str, Any]]) -> bool:
+    """
+    Hard rule: a valid outfit must have at most one item per clothing category.
+    Also rejects any item marked as non-clothing.
+    """
+    seen_categories: set[str] = set()
+
+    for i in idx_set:
+        item = items[i]
+
+        # Reject non-clothing items entirely
+        if item.get("clothing_type", "").lower() == "non-clothing":
+            return False
+
+        subtype = item.get("clothing_subtype", "")
+        category = _get_category(subtype)
+
+        # Skip unknown category items — don't block the combo but don't count them
+        if category == "unknown":
+            continue
+
+        # Reject if we already have an item in this category
+        if category in seen_categories:
+            return False
+
+        seen_categories.add(category)
+
+    # Must have at least 2 valid items after filtering
+    return True
+
+
+def _subtype_bonus(idx_set: List[int], items: List[Dict[str, Any]]) -> int:
+    """
+    Bonus points for outfit completeness:
+    +15 if has top + bottom + footwear (complete outfit)
+    +8  if has top + bottom or top + footwear
+    +3  if has bottom + footwear
+    """
+    categories = set()
+    for i in idx_set:
+        subtype = items[i].get("clothing_subtype", "")
+        cat = _get_category(subtype)
+        if cat != "unknown":
+            categories.add(cat)
+
+    has_top = "tops" in categories
+    has_bottom = "bottoms" in categories
+    has_shoes = "footwear" in categories
+
     if has_top and has_bottom and has_shoes:
-        return 10
-    if (has_top and has_bottom) or (has_top and has_shoes) or (has_bottom and has_shoes):
+        return 15
+    if has_top and has_bottom:
+        return 8
+    if has_top and has_shoes:
         return 5
+    if has_bottom and has_shoes:
+        return 3
     return 0
 
 
-def _season_bonus(season_lists: List[List[str]]) -> int:
+def _season_bonus(idx_set: List[int], items: List[Dict[str, Any]]) -> int:
     """Return +5 if all items share at least one season."""
-    if not season_lists:
+    season_lists = [items[i].get("season_suitability", []) for i in idx_set]
+    if not season_lists or any(len(s) == 0 for s in season_lists):
         return 0
     common = set(season_lists[0])
     for seasons in season_lists[1:]:
@@ -47,20 +129,20 @@ def _build_reasoning(
     mode: str,
     harmony_score: int,
 ) -> str:
-    """Generate a natural language explanation for the outfit combination."""
     palette_name = palette["palette_name"]
     palette_id = palette["palette_id"]
     combination_type = palette["combination_type"]
     mood_tags = ", ".join(palette.get("mood_tags", []))
-
     items_str = ", ".join(f"the {n}" for n in item_names)
 
     if mode == "anchored" and anchor_name:
+        others = [n for n in item_names if n != anchor_name]
+        others_str = ", ".join(f"the {n}" for n in others)
         return (
             f"The {anchor_name} anchors this look within Wada's Palette {palette_id} — "
             f"\"{palette_name}\" — a {combination_type} grouping with a {mood_tags} character. "
-            f"Pairing it with {', '.join(f'the {n}' for n in item_names if n != anchor_name)} "
-            f"reinforces the palette's color story, yielding a harmony score of {harmony_score}/100."
+            f"Pairing it with {others_str} reinforces the palette's color story, "
+            f"yielding a harmony score of {harmony_score}/100."
         )
     else:
         return (
@@ -79,15 +161,17 @@ def generate_outfit_combinations(
     """
     Generate and rank outfit combinations.
 
-    FREE MODE  (base_item_index is None): all combinations of 2–4 items.
-    ANCHORED MODE (base_item_index is int): base item always included + 1–3 others.
+    FREE MODE     (base_item_index is None): all valid combinations of 2–4 items.
+    ANCHORED MODE (base_item_index is int):  base item always included + 1–3 others.
+
+    A valid combination:
+      - Has at most one item per clothing category (no pant+pant)
+      - Contains no non-clothing items
     """
     n = len(items)
     all_colors: List[List[str]] = [item.get("dominant_colors", []) for item in items]
-    all_subtypes: List[str] = [item.get("clothing_subtype", "") for item in items]
-    all_seasons: List[List[str]] = [item.get("season_suitability", []) for item in items]
 
-    # Determine the anchor palette (anchored mode only)
+    # Determine anchor palette (anchored mode only)
     anchor_palette: Optional[Dict[str, Any]] = None
     anchor_name: Optional[str] = None
     if base_item_index is not None and 0 <= base_item_index < n:
@@ -98,24 +182,41 @@ def generate_outfit_combinations(
         anchor_name = items[base_item_index].get("clothing_type", f"Item {base_item_index}")
 
     # Build candidate index sets
-    candidate_sets: List[List[int]] = []
     indices = list(range(n))
+    raw_candidates: List[List[int]] = []
 
     if base_item_index is not None:
         others = [i for i in indices if i != base_item_index]
         for size in range(1, min(4, len(others)) + 1):
             for combo in itertools.combinations(others, size):
-                candidate_sets.append([base_item_index] + list(combo))
+                raw_candidates.append([base_item_index] + list(combo))
     else:
         for size in range(2, min(5, n) + 1):
             for combo in itertools.combinations(indices, size):
-                candidate_sets.append(list(combo))
+                raw_candidates.append(list(combo))
+
+    # ── KEY FIX: filter to only valid combinations ─────────────────────────
+    candidate_sets = [
+        idx_set for idx_set in raw_candidates
+        if _is_valid_combination(idx_set, items)
+    ]
 
     if not candidate_sets:
-        logger.warning("no_candidate_combinations", n=n, base_item_index=base_item_index)
+        logger.warning(
+            "no_valid_combinations_after_filtering",
+            n=n,
+            base_item_index=base_item_index,
+            raw_count=len(raw_candidates),
+        )
         return []
 
-    # Score all candidates
+    logger.info(
+        "combination_candidates",
+        raw=len(raw_candidates),
+        valid=len(candidate_sets),
+    )
+
+    # Score all valid candidates
     scored: List[tuple[float, List[int], Dict[str, Any]]] = []
 
     for idx_set in candidate_sets:
@@ -123,16 +224,10 @@ def generate_outfit_combinations(
             all_colors, idx_set, anchor_palette=anchor_palette
         )
         base_score = palette_service.delta_e_to_harmony_score(avg_de)
-
-        subtypes_in_combo = [all_subtypes[i] for i in idx_set]
-        seasons_in_combo = [all_seasons[i] for i in idx_set]
-
-        bonus = _subtype_bonus(subtypes_in_combo) + _season_bonus(seasons_in_combo)
+        bonus = _subtype_bonus(idx_set, items) + _season_bonus(idx_set, items)
         final_score = min(100, base_score + bonus)
-
         scored.append((final_score, idx_set, best_palette))
 
-    # Sort descending by score
     scored.sort(key=lambda x: -x[0])
     top = scored[:top_k]
 
