@@ -1,4 +1,4 @@
-import { AnalysisResponse, MatchedPalette } from "./types";
+import { AnalysisResponse, MatchedPalette, SessionsResponse } from "./types";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8001";
 
@@ -89,4 +89,27 @@ export async function getPalettes(): Promise<PalettesResponse> {
   }
 
   return res.json() as Promise<PalettesResponse>;
+}
+
+export async function getSessions(
+  page: number = 1,
+  pageSize: number = 12,
+): Promise<SessionsResponse> {
+  const params = new URLSearchParams({
+    page: String(page),
+    page_size: String(pageSize),
+  });
+
+  const res = await fetch(`${API_BASE}/api/sessions?${params.toString()}`);
+
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => null);
+    const message =
+      typeof errorBody?.detail === "string"
+        ? errorBody.detail
+        : `Failed to load sessions (${res.status})`;
+    throw new ApiError(res.status, message, errorBody?.detail);
+  }
+
+  return res.json() as Promise<SessionsResponse>;
 }

@@ -208,6 +208,12 @@ export default function UploadPage() {
           </div>
           <div className="flex items-center gap-3">
             <a
+              href="/sessions"
+              className="text-[11px] text-stone-500 hover:text-stone-700 transition-colors border border-stone-200 rounded-lg px-3 py-1.5 hidden sm:inline-block"
+            >
+              Sessions
+            </a>
+            <a
               href="/palettes"
               className="text-[11px] text-stone-500 hover:text-stone-700 transition-colors border border-stone-200 rounded-lg px-3 py-1.5 hidden sm:inline-block"
             >

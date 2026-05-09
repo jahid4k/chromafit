@@ -57,3 +57,33 @@ export interface AnalysisRequest {
   images: File[];
   base_item_index?: number;
 }
+
+// ── Sessions list ─────────────────────────────
+
+export interface SessionSummary {
+  session_id: string;
+  created_at: string | null;
+  mode: "free" | "anchored";
+  image_count: number;
+  thumbnail_url: string | null;
+  thumbnail_type: string | null;
+  anchor: boolean;
+  top_harmony_score: number | null;
+  top_palette_name: string | null;
+  top_palette_colors: WadaColor[];
+  top_item_names: string[];
+}
+
+export interface SessionsPagination {
+  page: number;
+  page_size: number;
+  total: number;
+  total_pages: number;
+  has_next: boolean;
+  has_prev: boolean;
+}
+
+export interface SessionsResponse {
+  sessions: SessionSummary[];
+  pagination: SessionsPagination;
+}
