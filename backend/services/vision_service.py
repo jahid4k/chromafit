@@ -9,7 +9,9 @@ from openai import AsyncOpenAI
 
 from config import settings
 import httpx
-from openai import APITimeoutError, APIConnectionError
+from openai import APITimeoutError, APIConnectionError, BadRequestError
+import io
+from PIL import Image as PILImage
 
 logger = structlog.get_logger(__name__)
 
@@ -85,6 +87,20 @@ RETRY_SUFFIX = (
 class VisionServiceError(Exception):
     pass
 
+def _resize_image(img_bytes: bytes, max_size: int = 512) -> bytes:
+    """Resize image so longest side is max_size pixels — reduces token usage."""
+    img = PILImage.open(io.BytesIO(img_bytes))
+    img = img.convert("RGB")  # strip alpha channel if any
+    
+    w, h = img.size
+    if max(w, h) > max_size:
+        ratio = max_size / max(w, h)
+        new_size = (int(w * ratio), int(h * ratio))
+        img = img.resize(new_size, PILImage.LANCZOS)
+    
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=85)
+    return buf.getvalue()
 
 def _build_content(
     images: List[bytes], mime_types: List[str], extra_text: str = ""
@@ -93,21 +109,14 @@ def _build_content(
     content: List[Dict[str, Any]] = []
 
     for idx, (img_bytes, mime_type) in enumerate(zip(images, mime_types)):
-        b64 = base64.b64encode(img_bytes).decode("utf-8")
-        content.append(
-            {
-                "type": "text",
-                "text": f"Image {idx} (0-indexed):",
-            }
-        )
-        content.append(
-            {
-                "type": "image_url",
-                "image_url": {
-                    "url": f"data:{mime_type};base64,{b64}",
-                },
-            }
-        )
+        # Resize before encoding — this is the key fix
+        resized = _resize_image(img_bytes, max_size=512)
+        b64 = base64.b64encode(resized).decode("utf-8")
+        content.append({"type": "text", "text": f"Image {idx} (0-indexed):"})
+        content.append({
+            "type": "image_url",
+            "image_url": {"url": f"data:image/jpeg;base64,{b64}"},
+        })
 
     user_text = "Analyze each wardrobe item image above and return the JSON."
     if extra_text:
@@ -202,6 +211,11 @@ async def analyze_wardrobe_images(
             raise VisionServiceError(
                 f"Cannot connect to vLLM at {settings.vllm_host}:{settings.vllm_port}. "
                 "Check VLLM_HOST and VLLM_PORT environment variables."
+            ) from exc
+        except BadRequestError as exc:
+            logger.error("vision_bad_request", error=str(exc))
+            raise VisionServiceError(
+                "Request too large for vLLM context window. Try fewer or smaller images."
             ) from exc
         return response.choices[0].message.content or ""
 
