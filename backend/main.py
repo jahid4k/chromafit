@@ -123,5 +123,5 @@ async def check_config():
 
 # ── Routers ───────────────────────────────────────────────────────────────────
 
-app.include_router(analysis.router, prefix="/api")
-app.include_router(sessions.router, prefix="/api")
+app.include_router(analysis.router)
+app.include_router(sessions.router)

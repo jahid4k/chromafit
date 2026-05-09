@@ -10,7 +10,7 @@ router = APIRouter()
 logger = structlog.get_logger(__name__)
 
 
-@router.get("/sessions/{session_id}", response_model=SessionResponse)
+@router.get("/api/sessions/{session_id}", response_model=SessionResponse)
 async def get_session(session_id: str) -> SessionResponse:
     log = logger.bind(session_id=session_id)
     log.info("session_fetch_request")
