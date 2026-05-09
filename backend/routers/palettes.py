@@ -1,7 +1,7 @@
 import structlog
 from fastapi import APIRouter, HTTPException
 
-from backend.services.palette_service import get_all_palettes
+from services.palette_service import get_all_palettes
 
 logger = structlog.get_logger(__name__)
 
