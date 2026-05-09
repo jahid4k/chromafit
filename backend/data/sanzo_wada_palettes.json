@@ -1,0 +1,356 @@
+[
+  {
+    "palette_id": 1,
+    "palette_name": "Midnight Dusk",
+    "combination_type": "analogous",
+    "mood_tags": ["cool", "sophisticated", "calm"],
+    "colors": [
+      { "hex": "#1A1A2E", "name": "Deep Navy" },
+      { "hex": "#16213E", "name": "Midnight Blue" },
+      { "hex": "#0F3460", "name": "Royal Indigo" },
+      { "hex": "#533483", "name": "Deep Violet" }
+    ]
+  },
+  {
+    "palette_id": 2,
+    "palette_name": "Autumn Ember",
+    "combination_type": "analogous",
+    "mood_tags": ["warm", "earthy", "autumnal"],
+    "colors": [
+      { "hex": "#8B4513", "name": "Saddle Brown" },
+      { "hex": "#D2691E", "name": "Chocolate" },
+      { "hex": "#F4A460", "name": "Sandy Brown" },
+      { "hex": "#FFDEAD", "name": "Navajo White" }
+    ]
+  },
+  {
+    "palette_id": 3,
+    "palette_name": "Forest Canopy",
+    "combination_type": "analogous",
+    "mood_tags": ["earthy", "natural", "muted"],
+    "colors": [
+      { "hex": "#2D4A22", "name": "Deep Forest" },
+      { "hex": "#4A7C59", "name": "Moss Green" },
+      { "hex": "#8FAF6E", "name": "Sage" },
+      { "hex": "#C5D99A", "name": "Light Fern" }
+    ]
+  },
+  {
+    "palette_id": 4,
+    "palette_name": "Desert Sand",
+    "combination_type": "analogous",
+    "mood_tags": ["warm", "earthy", "neutral"],
+    "colors": [
+      { "hex": "#C4A882", "name": "Sand Beige" },
+      { "hex": "#B8976A", "name": "Warm Tan" },
+      { "hex": "#A0785A", "name": "Camel" },
+      { "hex": "#8B6347", "name": "Sienna" }
+    ]
+  },
+  {
+    "palette_id": 5,
+    "palette_name": "Ocean Mist",
+    "combination_type": "analogous",
+    "mood_tags": ["cool", "calm", "delicate"],
+    "colors": [
+      { "hex": "#B0C4DE", "name": "Light Steel Blue" },
+      { "hex": "#87CEEB", "name": "Sky Blue" },
+      { "hex": "#4682B4", "name": "Steel Blue" },
+      { "hex": "#5F9EA0", "name": "Cadet Blue" }
+    ]
+  },
+  {
+    "palette_id": 6,
+    "palette_name": "Rose Dusk",
+    "combination_type": "analogous",
+    "mood_tags": ["warm", "delicate", "romantic"],
+    "colors": [
+      { "hex": "#FFB6C1", "name": "Light Pink" },
+      { "hex": "#FF69B4", "name": "Hot Pink" },
+      { "hex": "#C71585", "name": "Medium Violet Red" },
+      { "hex": "#DB7093", "name": "Pale Violet Red" }
+    ]
+  },
+  {
+    "palette_id": 7,
+    "palette_name": "Slate Horizon",
+    "combination_type": "neutral",
+    "mood_tags": ["cool", "muted", "minimal"],
+    "colors": [
+      { "hex": "#2F4F4F", "name": "Dark Slate Gray" },
+      { "hex": "#708090", "name": "Slate Gray" },
+      { "hex": "#B0BEC5", "name": "Blue Gray" },
+      { "hex": "#ECEFF1", "name": "Cloud White" }
+    ]
+  },
+  {
+    "palette_id": 8,
+    "palette_name": "Charcoal Sketch",
+    "combination_type": "neutral",
+    "mood_tags": ["muted", "minimal", "bold"],
+    "colors": [
+      { "hex": "#1C1C1C", "name": "Jet Black" },
+      { "hex": "#3D3D3D", "name": "Charcoal" },
+      { "hex": "#7A7A7A", "name": "Medium Gray" },
+      { "hex": "#D4D4D4", "name": "Silver" }
+    ]
+  },
+  {
+    "palette_id": 9,
+    "palette_name": "Warm Canvas",
+    "combination_type": "neutral",
+    "mood_tags": ["warm", "neutral", "earthy"],
+    "colors": [
+      { "hex": "#F5F0E8", "name": "Cream" },
+      { "hex": "#E8DCC8", "name": "Warm Ivory" },
+      { "hex": "#C8B49A", "name": "Linen" },
+      { "hex": "#9E7E6A", "name": "Warm Taupe" }
+    ]
+  },
+  {
+    "palette_id": 10,
+    "palette_name": "Navy & Rust",
+    "combination_type": "complementary",
+    "mood_tags": ["bold", "vibrant", "classic"],
+    "colors": [
+      { "hex": "#1B2A4A", "name": "Navy Blue" },
+      { "hex": "#2C3E50", "name": "Charcoal Navy" },
+      { "hex": "#C0392B", "name": "Rust Red" },
+      { "hex": "#E74C3C", "name": "Tomato" }
+    ]
+  },
+  {
+    "palette_id": 11,
+    "palette_name": "Olive & Burgundy",
+    "combination_type": "complementary",
+    "mood_tags": ["earthy", "warm", "autumnal"],
+    "colors": [
+      { "hex": "#556B2F", "name": "Dark Olive" },
+      { "hex": "#808000", "name": "Olive" },
+      { "hex": "#722F37", "name": "Burgundy" },
+      { "hex": "#A0522D", "name": "Sienna" }
+    ]
+  },
+  {
+    "palette_id": 12,
+    "palette_name": "Teal & Coral",
+    "combination_type": "complementary",
+    "mood_tags": ["vibrant", "warm", "bold"],
+    "colors": [
+      { "hex": "#008080", "name": "Teal" },
+      { "hex": "#20B2AA", "name": "Light Sea Green" },
+      { "hex": "#FF7F50", "name": "Coral" },
+      { "hex": "#FF6347", "name": "Tomato" }
+    ]
+  },
+  {
+    "palette_id": 13,
+    "palette_name": "Indigo Serenity",
+    "combination_type": "analogous",
+    "mood_tags": ["cool", "calm", "sophisticated"],
+    "colors": [
+      { "hex": "#2C3E50", "name": "Charcoal Navy" },
+      { "hex": "#34495E", "name": "Slate Blue" },
+      { "hex": "#5D6D7E", "name": "Cool Gray" },
+      { "hex": "#AED6F1", "name": "Powder Blue" }
+    ]
+  },
+  {
+    "palette_id": 14,
+    "palette_name": "Earthen Triad",
+    "combination_type": "triadic",
+    "mood_tags": ["earthy", "warm", "natural"],
+    "colors": [
+      { "hex": "#8B4513", "name": "Saddle Brown" },
+      { "hex": "#2E8B57", "name": "Sea Green" },
+      { "hex": "#4169E1", "name": "Royal Blue" }
+    ]
+  },
+  {
+    "palette_id": 15,
+    "palette_name": "Urban Triad",
+    "combination_type": "triadic",
+    "mood_tags": ["bold", "vibrant", "cool"],
+    "colors": [
+      { "hex": "#1A237E", "name": "Deep Blue" },
+      { "hex": "#B71C1C", "name": "Deep Red" },
+      { "hex": "#1B5E20", "name": "Dark Green" }
+    ]
+  },
+  {
+    "palette_id": 16,
+    "palette_name": "Pastel Trinity",
+    "combination_type": "triadic",
+    "mood_tags": ["delicate", "cool", "vibrant"],
+    "colors": [
+      { "hex": "#AED6F1", "name": "Pastel Blue" },
+      { "hex": "#A9DFBF", "name": "Pastel Green" },
+      { "hex": "#F9E4B7", "name": "Pastel Yellow" }
+    ]
+  },
+  {
+    "palette_id": 17,
+    "palette_name": "Split Dusk",
+    "combination_type": "split-complementary",
+    "mood_tags": ["cool", "sophisticated", "bold"],
+    "colors": [
+      { "hex": "#2C3E50", "name": "Dark Navy" },
+      { "hex": "#E67E22", "name": "Carrot Orange" },
+      { "hex": "#E91E63", "name": "Rose" }
+    ]
+  },
+  {
+    "palette_id": 18,
+    "palette_name": "Split Meadow",
+    "combination_type": "split-complementary",
+    "mood_tags": ["natural", "vibrant", "warm"],
+    "colors": [
+      { "hex": "#27AE60", "name": "Emerald" },
+      { "hex": "#9B59B6", "name": "Amethyst" },
+      { "hex": "#E74C3C", "name": "Alizarin" }
+    ]
+  },
+  {
+    "palette_id": 19,
+    "palette_name": "Deep Plum",
+    "combination_type": "monochromatic",
+    "mood_tags": ["bold", "sophisticated", "cool"],
+    "colors": [
+      { "hex": "#2E003E", "name": "Deepest Plum" },
+      { "hex": "#5B0073", "name": "Dark Violet" },
+      { "hex": "#9B30CC", "name": "Medium Purple" },
+      { "hex": "#D7A8F0", "name": "Lavender" }
+    ]
+  },
+  {
+    "palette_id": 20,
+    "palette_name": "Ink Wash",
+    "combination_type": "monochromatic",
+    "mood_tags": ["cool", "muted", "minimal"],
+    "colors": [
+      { "hex": "#0D1B2A", "name": "Deepest Navy" },
+      { "hex": "#1B3A5C", "name": "Dark Navy" },
+      { "hex": "#2E6DA4", "name": "Medium Blue" },
+      { "hex": "#7BB3D9", "name": "Light Blue" }
+    ]
+  },
+  {
+    "palette_id": 21,
+    "palette_name": "Burnt Sienna Mono",
+    "combination_type": "monochromatic",
+    "mood_tags": ["warm", "earthy", "bold"],
+    "colors": [
+      { "hex": "#4A1800", "name": "Deep Burnt" },
+      { "hex": "#8B3A00", "name": "Burnt Sienna Dark" },
+      { "hex": "#CD5C1A", "name": "Burnt Sienna" },
+      { "hex": "#E8A87C", "name": "Light Sienna" }
+    ]
+  },
+  {
+    "palette_id": 22,
+    "palette_name": "Stone & Fog",
+    "combination_type": "neutral",
+    "mood_tags": ["muted", "cool", "calm"],
+    "colors": [
+      { "hex": "#4A4A4A", "name": "Dark Stone" },
+      { "hex": "#7A7A7A", "name": "Mid Stone" },
+      { "hex": "#ADADAD", "name": "Light Stone" },
+      { "hex": "#E0E0E0", "name": "Fog" }
+    ]
+  },
+  {
+    "palette_id": 23,
+    "palette_name": "Khaki & Olive",
+    "combination_type": "analogous",
+    "mood_tags": ["earthy", "muted", "natural"],
+    "colors": [
+      { "hex": "#C8B96E", "name": "Khaki" },
+      { "hex": "#A89A4E", "name": "Dark Khaki" },
+      { "hex": "#6B7B3A", "name": "Olive Green" },
+      { "hex": "#4E5D27", "name": "Dark Olive" }
+    ]
+  },
+  {
+    "palette_id": 24,
+    "palette_name": "Chambray Sky",
+    "combination_type": "analogous",
+    "mood_tags": ["cool", "calm", "delicate"],
+    "colors": [
+      { "hex": "#D0E8F2", "name": "Pale Sky" },
+      { "hex": "#93C6E0", "name": "Chambray Blue" },
+      { "hex": "#5B9DC9", "name": "Cornflower" },
+      { "hex": "#2E75B6", "name": "Classic Blue" }
+    ]
+  },
+  {
+    "palette_id": 25,
+    "palette_name": "Cream & Cognac",
+    "combination_type": "complementary",
+    "mood_tags": ["warm", "earthy", "sophisticated"],
+    "colors": [
+      { "hex": "#F5ECD7", "name": "Cream" },
+      { "hex": "#E8D5B0", "name": "Warm Ivory" },
+      { "hex": "#9B5E2A", "name": "Cognac" },
+      { "hex": "#7A3F18", "name": "Dark Cognac" }
+    ]
+  },
+  {
+    "palette_id": 26,
+    "palette_name": "Terracotta Bloom",
+    "combination_type": "analogous",
+    "mood_tags": ["warm", "earthy", "vibrant"],
+    "colors": [
+      { "hex": "#C1440E", "name": "Terracotta" },
+      { "hex": "#E07B54", "name": "Warm Coral" },
+      { "hex": "#F0A07A", "name": "Peach" },
+      { "hex": "#F5C9A8", "name": "Light Peach" }
+    ]
+  },
+  {
+    "palette_id": 27,
+    "palette_name": "Sage & Blush",
+    "combination_type": "split-complementary",
+    "mood_tags": ["delicate", "natural", "warm"],
+    "colors": [
+      { "hex": "#8FAF6E", "name": "Sage Green" },
+      { "hex": "#C4A8A8", "name": "Dusty Rose" },
+      { "hex": "#E8B4B8", "name": "Blush" }
+    ]
+  },
+  {
+    "palette_id": 28,
+    "palette_name": "Ink & Ivory",
+    "combination_type": "complementary",
+    "mood_tags": ["bold", "minimal", "classic"],
+    "colors": [
+      { "hex": "#1A1A1A", "name": "Ink Black" },
+      { "hex": "#3D3D3D", "name": "Dark Charcoal" },
+      { "hex": "#F5F0E8", "name": "Ivory" },
+      { "hex": "#FFFEF2", "name": "Pure White" }
+    ]
+  },
+  {
+    "palette_id": 29,
+    "palette_name": "Cobalt & Amber",
+    "combination_type": "complementary",
+    "mood_tags": ["vibrant", "bold", "warm"],
+    "colors": [
+      { "hex": "#0047AB", "name": "Cobalt Blue" },
+      { "hex": "#1565C0", "name": "Medium Cobalt" },
+      { "hex": "#FF8F00", "name": "Amber" },
+      { "hex": "#FFA000", "name": "Light Amber" }
+    ]
+  },
+  {
+    "palette_id": 30,
+    "palette_name": "Lavender Fields",
+    "combination_type": "analogous",
+    "mood_tags": ["cool", "delicate", "calm"],
+    "colors": [
+      { "hex": "#E8E0F0", "name": "Pale Lavender" },
+      { "hex": "#C9B8E8", "name": "Soft Lavender" },
+      { "hex": "#9B7FCA", "name": "Medium Lavender" },
+      { "hex": "#6B4FA8", "name": "Deep Lavender" }
+    ]
+  }
+]

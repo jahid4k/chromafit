@@ -1,0 +1,98 @@
+services:
+
+  # ── vLLM (AMD ROCm) ───────────────────────────────────────────────
+  # The droplet says "vLLM is only available inside Docker" —
+  # this IS that Docker container. We pull the official ROCm/vLLM image.
+  vllm:
+    image: rocm/vllm:latest
+    container_name: chromafit-vllm
+    command: >
+      python -m vllm.entrypoints.openai.api_server
+      --model Qwen/Qwen2.5-VL-7B-Instruct
+      --dtype float16
+      --max-model-len 16384
+      --gpu-memory-utilization 0.88
+      --max-num-seqs 8
+      --port 8000
+      --host 0.0.0.0
+    ports:
+      - "8000:8000"
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    security_opt:
+      - seccomp=unconfined
+    group_add:
+      - video
+    volumes:
+      # Model weights are cached here so they don't re-download on every restart
+      - huggingface_cache:/root/.cache/huggingface
+    restart: unless-stopped
+    networks:
+      - chromafit-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s    # vLLM takes ~2 min to load the model on first start
+
+  # ── FastAPI Backend ───────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: chromafit-backend
+    ports:
+      - "8001:8001"
+    environment:
+      # Use the Docker service name "vllm" — Docker resolves this to the right container
+      VLLM_HOST: vllm
+      VLLM_PORT: "8000"
+      VLLM_MODEL: Qwen/Qwen2.5-VL-7B-Instruct
+
+      # MongoDB Atlas (cloud) — read from .env file
+      MONGODB_URL: ${MONGODB_URL}
+      MONGODB_DB_NAME: ${MONGODB_DB_NAME}
+
+      # Cloudinary — read from .env file
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      CLOUDINARY_FOLDER: chromafit
+
+      # App settings
+      APP_ENV: production
+      LOG_LEVEL: INFO
+      MAX_IMAGES_PER_REQUEST: "10"
+      MAX_IMAGE_SIZE_MB: "5"
+    depends_on:
+      vllm:
+        condition: service_healthy    # Don't start backend until vLLM is ready
+    restart: unless-stopped
+    networks:
+      - chromafit-network
+
+  # ── Next.js Frontend ──────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Replace with your actual droplet public IP
+        NEXT_PUBLIC_API_URL: http://${DROPLET_IP}:8001
+    container_name: chromafit-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - chromafit-network
+
+networks:
+  chromafit-network:
+    driver: bridge
+
+volumes:
+  huggingface_cache:

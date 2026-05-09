@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Environment variables — NEVER commit these
+.env
+.env.local
+.env*.local
+backend/.env          
+frontend/.env         
+frontend/.env.local   
+
+# Next.js
+frontend/.next/
+frontend/node_modules/
+
+# MongoDB local data
+mongo_data/
+
+# macOS
+.DS_Store
+
+# VS Code / editor
+.vscode/             
+.idea/               
+
+# Python eggs / build artifacts
+*.egg-info/           
+dist/                 
+build/                
+
+# Logs
+*.log            
+chromafit_folder_structure.md
