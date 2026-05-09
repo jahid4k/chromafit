@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     app_name: str = "Chromafit Backend"
     app_env: str = "development"
     log_level: str = "INFO"
-    max_images_per_request: int = 20
+    max_images_per_request: int = 10
     max_image_size_mb: int = 5
 
     @property
