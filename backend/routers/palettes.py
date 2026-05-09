@@ -8,7 +8,7 @@ logger = structlog.get_logger(__name__)
 router = APIRouter(prefix="/api", tags=["palettes"])
 
 
-@router.get("/api/palettes")
+@router.get("/palettes")
 async def list_palettes() -> dict:
     """
     Return the full Sanzo Wada palette library.
